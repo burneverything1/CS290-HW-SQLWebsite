@@ -11,6 +11,7 @@ function getWorkouts() {
         if(req.status >= 200 && req.status <= 400) {
             createTable(JSON.parse(req.responseText))
             attachDelete()
+            attachEdit()
         }
         else {
             console.log("Error in network request: " + req.statusText)
@@ -27,6 +28,11 @@ function bindbuttons() {
         event.stopImmediatePropagation()
         event.preventDefault()
         var req = new XMLHttpRequest();
+        // check if name exists
+        if(document.getElementById('name').value === ""){
+            return
+        }
+
         var payload = {
             "name" : document.getElementById('name').value,
             "reps" : null,
@@ -88,6 +94,17 @@ function attachDelete() {
     })
 }
 
+function attachEdit() {
+    var editbuttons = document.getElementsByName('edit')
+    editbuttons.forEach(e_button => {
+        e_button.addEventListener('click', function(event) {
+            event.stopImmediatePropagation()
+            event.preventDefault()
+            window.location.href = baseUrl + 'edit.html?' + `q=${e_button.id}`
+        })
+    })
+}
+
 function createTable(req_json) {
     var body = document.getElementById('workoutbody')
     // clear existing rows
@@ -122,14 +139,12 @@ function createTable(req_json) {
         w_delete.type = 'submit'
         w_delete.name = 'delete'
         w_delete.value = 'Delete'
-        w_delete.class = 'delete_button'
         w_delete.id = `${element.id}`
         w_buttons.appendChild(w_delete)
         let w_edit = document.createElement('input')
         w_edit.type = 'submit'
         w_edit.name = 'edit'
         w_edit.value = 'Edit'
-        w_edit.class = 'edit_button'
         w_edit.id = `${element.id}`
         w_buttons.appendChild(w_edit)
 
