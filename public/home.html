@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <script src="scripts.js" defer></script>
+    <title>Home</title>
+</head>
+<body>
+    <form method="POST">
+        <fieldset>
+            <legend>Enter Workout Here:</legend>
+            <label for="name">Exercise Name:</label>
+            <input type="text" name="name" id="name">
+            <label for="reps">Rep Count:</label>
+            <input type="number" name="reps" id="reps">
+            <label for="weight">How Much Weight:</label>
+            <input type="number" name="weight" id="weight">
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date">
+            <label for="pounds">Lbs:</label>
+            <input type="radio" name="unit" id="pounds" value="pounds">
+            <label for="kilograms">Kgs:</label>
+            <input type="radio" name="unit" id="kilograms" value="kilograms">
+            <input type="submit" id="workoutsubmit" value="Save Workout">
+        </fieldset>
+    </form>
+    
+    <h1>Workout Log</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Exercise Name</th>
+                <th>Rep Count</th>
+                <th>Weight</th>
+                <th>Date</th>
+                <th>Lbs or Kgs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <form method="POST">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <input type="submit" name="delete" value="Delete">
+                        <input type="submit" name="edit" value="Edit">
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
