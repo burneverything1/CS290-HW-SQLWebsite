@@ -12,7 +12,7 @@ app.set('port', 3000)
 // queries
 var tableName = 'workouts'
 var getAllQuery = `SELECT * FROM ${tableName}`
-var insertQuery = ``
+var insertQuery = `INSERT INTO ${tableName}(name, reps, weight, date, unit) VALUES (?, ?, ?, ?, ?)`
 var updateQuery = ``
 var deleteQuery = ``
 var deleteTableQuery = `DROP TABLE IF EXISTS ${tableName}`
@@ -41,14 +41,11 @@ app.get('/', (req, res) => {
 })
 
 // add workout
-
 app.put('/', (req, res) => {
     var content = {};
-    content = JSON.parse(req.body)
-    console.log(content)
-    res.send(content)
+    content = req.body
+    mysql.pool.query(insertQuery, ([content.name, content.reps, content.weight, content.date, content.unit]))
 })
-
   
 app.listen(app.get('port'), function(){
     console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
