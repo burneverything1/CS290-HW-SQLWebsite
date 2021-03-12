@@ -10,6 +10,7 @@ function getWorkouts() {
     req.addEventListener('load', function() {
         if(req.status >= 200 && req.status <= 400) {
             createTable(JSON.parse(req.responseText))
+            attachDelete()
         }
         else {
             console.log("Error in network request: " + req.statusText)
@@ -54,7 +55,7 @@ function bindbuttons() {
         req.setRequestHeader('Content-Type', 'application/json')
         req.addEventListener('load', function() {
             if(req.status >= 200 && req.status <= 400) {
-                createRow(JSON.parse(req.responseText))
+                getWorkouts()
             }
             else {
                 console.log('Error in network request: ' + req.statusText)
@@ -64,8 +65,36 @@ function bindbuttons() {
     })
 }
 
+function attachDelete() {
+    var deletebuttons = document.getElementsByName('delete')
+    deletebuttons.forEach(d_button => {
+        d_button.addEventListener('click', function(event) {
+            event.stopImmediatePropagation()
+            event.preventDefault()
+            var req = new XMLHttpRequest()
+            var payload = {"delete" : d_button.id}
+            req.open('DELETE', baseUrl, true)
+            req.setRequestHeader('Content-Type', 'application/json')
+            req.addEventListener('load', function() {
+                if(req.status >= 200 && req.status <= 400) {
+                    getWorkouts()
+                }
+                else {
+                    console.log('Error in network request: ' + req.statusText)
+                }
+            })
+            req.send(JSON.stringify(payload))
+        })
+    })
+}
+
 function createTable(req_json) {
     var body = document.getElementById('workoutbody')
+    // clear existing rows
+    while (body.firstChild){
+        body.removeChild(body.lastChild)
+    }
+
     req_json.forEach(element => {
 
         let row = body.insertRow()
@@ -93,54 +122,17 @@ function createTable(req_json) {
         w_delete.type = 'submit'
         w_delete.name = 'delete'
         w_delete.value = 'Delete'
-        w_delete.id = `${element.id}delete`
+        w_delete.class = 'delete_button'
+        w_delete.id = `${element.id}`
         w_buttons.appendChild(w_delete)
         let w_edit = document.createElement('input')
         w_edit.type = 'submit'
         w_edit.name = 'edit'
         w_edit.value = 'Edit'
-        w_edit.id = `${element.id}edit`
+        w_edit.class = 'edit_button'
+        w_edit.id = `${element.id}`
         w_buttons.appendChild(w_edit)
 
         w_inputs.appendChild(w_buttons)
     });
-}
-
-function createRow(req_json){
-    var body = document.getElementById('workoutbody')
-    let row = body.insertRow()
-    let w_name = row.insertCell(0)
-    w_name.innerHTML = req_json.name
-    let w_reps = row.insertCell(1)
-    w_reps.innerHTML = req_json.reps
-    let w_weight = row.insertCell(2)
-    w_weight.innerHTML = req_json.weight
-    let w_date = row.insertCell(3)
-    w_date.innerHTML = req_json.date
-    let w_unit = row.insertCell(4)
-    w_unit.innerHTML = req_json.unit        
-    // buttons
-    let w_inputs = row.insertCell(5)
-    let w_buttons = document.createElement('form')
-
-    let hidden_id = document.createElement('input')
-    hidden_id.type = 'hidden'
-    hidden_id.name = `${req_json.id}`
-    hidden_id.value = `${req_json.id}`
-    w_buttons.appendChild(hidden_id)
-
-    let w_delete = document.createElement('input')
-    w_delete.type = 'submit'
-    w_delete.name = 'delete'
-    w_delete.value = 'Delete'
-    w_delete.id = `${req_json.id}delete`
-    w_buttons.appendChild(w_delete)
-    let w_edit = document.createElement('input')
-    w_edit.type = 'submit'
-    w_edit.name = 'edit'
-    w_edit.value = 'Edit'
-    w_edit.id = `${req_json.id}edit`
-    w_buttons.appendChild(w_edit)
-
-    w_inputs.appendChild(w_buttons)  
 }

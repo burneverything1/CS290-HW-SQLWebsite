@@ -14,7 +14,7 @@ var tableName = 'workouts'
 var getAllQuery = `SELECT * FROM ${tableName}`
 var insertQuery = `INSERT INTO ${tableName}(name, reps, weight, date, unit) VALUES (?, ?, ?, ?, ?)`
 var updateQuery = ``
-var deleteQuery = ``
+var deleteQuery = `DELETE FROM ${tableName} WHERE id = (?)`
 var deleteTableQuery = `DROP TABLE IF EXISTS ${tableName}`
 
 app.get('/reset-table',function(req,res,next){
@@ -47,6 +47,15 @@ app.put('/', (req, res) => {
     mysql.pool.query(insertQuery, ([content.name, content.reps, content.weight, content.date, content.unit]), (err, result) =>{
       res.send(content)
     })
+})
+
+// delete workout
+app.delete('/', (req, res) => {
+  var content = {}
+  content = req.body
+  mysql.pool.query(deleteQuery, ([content.delete]), (err, result) =>{
+    res.send(content)
+  })
 })
   
 app.listen(app.get('port'), function(){
