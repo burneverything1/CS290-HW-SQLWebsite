@@ -44,7 +44,9 @@ app.get('/', (req, res) => {
 app.put('/', (req, res) => {
     var content = {};
     content = req.body
-    mysql.pool.query(insertQuery, ([content.name, content.reps, content.weight, content.date, content.unit]))
+    mysql.pool.query(insertQuery, ([content.name, content.reps, content.weight, content.date, content.unit]), (err, result) =>{
+      res.send(content)
+    })
 })
   
 app.listen(app.get('port'), function(){
