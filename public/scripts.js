@@ -1,4 +1,4 @@
-var baseUrl = 'http://localhost:3000/'
+var baseUrl = 'http://flip3.engr.oregonstate.edu:1993/'
 
 // get all the rows of server
 document.addEventListener('DOMContentLoaded', getWorkouts)

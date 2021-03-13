@@ -1,5 +1,5 @@
-var baseUrl = 'http://localhost:3000/'
-var editURL = 'http://localhost:3000/edit'
+var baseUrl = 'http://flip3.engr.oregonstate.edu:1993/'
+var editURL = 'http://flip3.engr.oregonstate.edu:1993/edit'
 
 document.addEventListener('DOMContentLoaded', loadWorkout)
 
